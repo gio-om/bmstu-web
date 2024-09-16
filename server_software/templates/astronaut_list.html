@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Список ПО для установки{% endblock %}
+
+{% block content %}
+    <h1 class="d-flex justify-content-center mt-4 mb-4 text-white">Астронавты</h1>
+
+    <form action="" method="get" class="d-flex mt-4 mb-4">
+        <div class="flex-grow-1">
+            <input class="form-control rounded-0 bg-black text-white" placeholder="Поиск..." aria-label="Поиск" name="astronaut_title" type="text" value="{{ data.astronaut_title }}">
+        </div>
+        <div class="px-3">
+            <input type="submit" class="btn black-btn ml-3 mr-3" value="Поиск">
+        </div>
+        <div class="">
+            <a href="{% url 'request' data.request_id %}" class="btn black-btn">
+                {{ data.count }}
+                <img src="{% static 'img/cart.png' %}" width="25" alt="cart">
+            </a>
+        </div>
+    </form>
+
+    <div class="row row-cols-1 row-cols-md-2
+                    row-cols-lg-5 g-4">
+        {% for astronaut in data.astronaut_list %}
+            <div class="col">
+                <div class="card h-100 rounded-0 bg-black border-white text-white">
+                    <img src="{{ astronaut.logo_file_path }}" class="card-img-top astronaut-card-img"
+                         alt="{{ astronaut.logo_file_path }}"
+                    >
+                    <div class="card-body">
+                        <h5 class="card-title">{{ astronaut.name }}</h5>
+                        <p class="card-text">{{ astronaut.specialization }}</p>
+                        <p class="card-text">Экспедиции:</p>
+                    </div>
+                    
+                    <ul>
+                        {% for expedition in astronaut.expeditions %}
+                        <li>{{ expedition }}</li>
+                        {% endfor %}
+
+                    </ul>
+
+                    <div class="card-body">
+                        <p class="card-text">Время в космосе: <strong>{{ astronaut.space_time }}</strong></p>
+                    </div>
+                    <div class="card-body">
+                        <a href="{% url 'astronaut_url' astronaut.id %}" class="btn black-btn">Подробнее</a>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="alert alert-danger not-found-alert" role="alert">
+                Астронавт по запросу не найдено. <a href="{% url 'astronaut_list' %}" class="alert-link">Полный список</a>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="py-3"></div>
+{% endblock %}
