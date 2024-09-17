@@ -1,50 +1,49 @@
 {% extends 'base.html' %}
 
-{% block title %}Заказ{% endblock %}
+{% block title %}Экспедиция{% endblock %}
 
 {% block content %}
-    <div class="card mb-3 mt-4">
-        <div class="card-body">
+    <div class="card mb-4 mt-4 rounded-0">
+        <div class="card-body bg-black text-white border-white">
             <h5 class="card-title">
-                Сервер пользователя: <strong>123.43.23.53</strong>
+                Цель полета: <strong>Полет на Луну</strong>
             </h5>
         </div>
     </div>
-    {% for software in data.astronaut_list %}
-        <div class="card mb-3">
+    {% for astronaut in data.astronaut_list %}
+        <div class="card mb-3 rounded-0 bg-black text-white border-white">
             <div class="row g-0">
                 <div class="col-md-2">
                     <div class="card-body">
-                        <img src="{{ software.logo_file_path }}" width="100px" class="img-fluid rounded-start"
-                             alt="{{ software.logo_file_path }}">
+                        <img src="{{ astronaut.logo_file_path }}" width="100px" class="img-fluid"
+                             alt="{{ astronaut.logo_file_path }}">
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-2">
                     <div class="card-body">
                         <h5 class="card-title">
-                            <a class="text-black text-decoration-none"
-                               href="{% url 'software_url' software.id %}">{{ software.title }}</a>
+                            <a class="text-white text-decoration-none"
+                               href="{% url 'astronaut_url' astronaut.id %}">{{ astronaut.name }}</a>
                         </h5>
                     </div>
                 </div>
                 <div class="col-md-2">
                     <div class="card-body">
-                        <p class="card-text">Версия: <strong>v3.0</strong></p>
+                        <p class="card-text text-white"><strong>{{ astronaut.specialization }}</strong></p>
                     </div>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-2"></div>
                     <div class="card-body">
-                        <p class="card-text"><strong>{{ software.price }} руб.</strong></p>
+                        <a class="btn leader-btn">Назначить лидером</a>
                     </div>
                 </div>
             </div>
-        </div>
     {% empty %}
         <div class="alert alert-danger not-found-alert" role="alert">
-            Корзина пуста
+            В экспедиции нет астронавтов            
         </div>
     {% endfor %}
-    <div class="card mb-3 mt-4">
+    <!-- <div class="card mb-3 mt-4">
         <div class="row g-0">
             <div class="col-md-10">
                 <div class="card-body">
@@ -59,5 +58,5 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 {% endblock %}

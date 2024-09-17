@@ -1,6 +1,6 @@
 .astronaut-card-img {
     width: 80%;
-    height: 125px;
+    max-height: 230px;
     margin-left: auto;
     margin-right: auto;
     margin-top: 20px;
@@ -19,10 +19,28 @@
     color: #000000;
 }
 
+.leader-btn {
+    background-color: #000000;
+    color: #fff;
+    border-radius: 0;
+    border-width: 1px;
+    border-color: white;
+}
+
+.leader-btn:hover {
+    background-color: #fff;
+    color: #000000;
+}
+
+
 .not-found-alert {
     width: 100%;
 }
 
 .form-control::placeholder {
     color: #fff;
+}
+
+.name-display {
+    font-size: 36px;
 }

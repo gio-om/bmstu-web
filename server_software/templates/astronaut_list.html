@@ -1,22 +1,22 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Список ПО для установки{% endblock %}
+{% block title %}Полеты Orion{% endblock %}
 
 {% block content %}
     <h1 class="d-flex justify-content-center mt-4 mb-4 text-white">Астронавты</h1>
 
     <form action="" method="get" class="d-flex mt-4 mb-4">
         <div class="flex-grow-1">
-            <input class="form-control rounded-0 bg-black text-white" placeholder="Поиск..." aria-label="Поиск" name="astronaut_title" type="text" value="{{ data.astronaut_title }}">
+            <input class="form-control rounded-0 bg-black text-white" placeholder="Поиск..." aria-label="Поиск" name="astronaut_name" type="text" value="{{ data.astronaut_title }}">
         </div>
         <div class="px-3">
             <input type="submit" class="btn black-btn ml-3 mr-3" value="Поиск">
         </div>
         <div class="">
             <a href="{% url 'request' data.request_id %}" class="btn black-btn">
-                {{ data.count }}
-                <img src="{% static 'img/cart.png' %}" width="25" alt="cart">
+                {{ data.count }} 
+                <img src="{% static 'img/cart.png' %}" width="22" alt="cart">
             </a>
         </div>
     </form>
@@ -26,7 +26,7 @@
         {% for astronaut in data.astronaut_list %}
             <div class="col">
                 <div class="card h-100 rounded-0 bg-black border-white text-white">
-                    <img src="{{ astronaut.logo_file_path }}" class="card-img-top astronaut-card-img"
+                    <img src="{{ astronaut.logo_file_path }}" class="card-img-top astronaut-card-img rounded-0"
                          alt="{{ astronaut.logo_file_path }}"
                     >
                     <div class="card-body">
@@ -51,7 +51,7 @@
                 </div>
             </div>
         {% empty %}
-            <div class="alert alert-danger not-found-alert" role="alert">
+            <div class="alert alert-danger not-found-alert rounded-0" role="alert">
                 Астронавт по запросу не найдено. <a href="{% url 'astronaut_list' %}" class="alert-link">Полный список</a>
             </div>
         {% endfor %}

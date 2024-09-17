@@ -4,17 +4,30 @@
 
 {% block content %}
     <div class="row mt-4">
-        <div class="col">
+        <div class="col text-white">
             <h2>{{ data.title }}</h2>
-            <p class=""><strong>Цена установки:</strong> {{ data.price }} руб.</p>
-            <p class=""><strong>Время установки:</strong> {{ data.time }} мин.</p>
-            <p class=""><strong>Размер:</strong> {{ data.size }}</p>
-            <p class="py-2"><strong>Описание</strong></p>
+            <p class="name-display"><strong> {{ data.name }} </strong></p>
+            <p class=""><strong>Страна:</strong> {{ data.country }} </p>
+            <p class=""><strong>Специальность:</strong> {{ data.specialization }}</p>
+            
+            <p class=""><strong>Экспедиции:</strong></p>
+            <ul>
+                {% for expedition in data.expeditions %}
+                <li>{{ expedition }}</li>
+                {% endfor %}
+
+            </ul>
+
+            <p class=""><strong>Время в космосе:</strong> {{ data.space_time }} </p>
+            <!-- <p class=""><strong>Дата рождения:</strong> {{ data.specialization }}</p> -->
+            <p class="py-2"> {{ data.biography|linebreaks }}  </p>
         </div>
-        <div class="col">
+
+        <div class="col mt-4">
             <img src="{{ data.logo_file_path }}" alt="{{ data.logo_file_path }}"
-                 width="200px">
+                 width="300px">
         </div>
+        
     </div>
     <p>{{ data.description }}</p>
 {% endblock %}
