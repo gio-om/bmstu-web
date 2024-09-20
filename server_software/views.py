@@ -4,7 +4,7 @@ astronaut_list = [
     {
         'id': 1,
         'name': 'Вуди Хобург',
-        'logo_file_name': '1.jpg',
+        'logo_file_name': 'http://127.0.0.1:9000/astronauts/1.jpg',
         'specialization': 'Пилот',
         'country': 'USA',
         'expeditions': ['SpaceX_Crew-6'],
@@ -14,7 +14,7 @@ astronaut_list = [
     {
         'id': 2,
         'name': 'Джош Кассада',
-        'logo_file_name': '2.jpg',
+        'logo_file_name': 'http://127.0.0.1:9000/astronauts/2.jpg',
         'specialization': 'Астронавт',
         'country': 'USA',
         'expeditions': ['SpaceX_Crew-7'],
@@ -24,7 +24,7 @@ astronaut_list = [
     {
         'id': 3,
         'name': 'Николь Манн',
-        'logo_file_name': '3.jpg',
+        'logo_file_name': 'http://127.0.0.1:9000/astronauts/3.jpg',
         'specialization': 'Астронавт',
         'country': 'USA',
         'expeditions': ['SpaceX_Crew-5'],
@@ -34,7 +34,7 @@ astronaut_list = [
     {
         'id': 4,
         'name': 'Жасмин Могбелли',
-        'logo_file_name': '4.jpg',
+        'logo_file_name': 'http://127.0.0.1:9000/astronauts/4.jpg',
         'specialization': 'Астронавт',
         'country': 'USA',
         'expeditions': ['SpaceX_Crew-5'],
@@ -44,7 +44,7 @@ astronaut_list = [
     {
         'id': 5,
         'name': 'Терри Верст',
-        'logo_file_name': '5.jpg',
+        'logo_file_name': 'http://127.0.0.1:9000/astronauts/5.jpg',
         'specialization': 'Летчик-испытатель',
         'country': 'USA',
         'expeditions': ['STS-130', 'Союз ТМА-15'],
@@ -57,50 +57,41 @@ user_request = [
     {
         'id': 1,
         'name': 'Вуди Хобург',
-        'logo_file_name': '1.jpg',
+        'logo_file_name': 'http://127.0.0.1:9000/astronauts/1.jpg',
         'specialization': 'Летчик-испытатель',
     },
     {
         'id': 2,
         'name': 'Джош Кассада',
-        'logo_file_name': '2.jpg',
+        'logo_file_name': 'http://127.0.0.1:9000/astronauts/2.jpg',
         'specialization': 'Астронавт',
     },
     {
         'id': 3,
         'name': 'Николь Манн',
-        'logo_file_name': '3.jpg',
+        'logo_file_name': 'http://127.0.0.1:9000/astronauts/3.jpg',
         'specialization': 'Астронавт',
     },
 ]
 
-MINIO_HOST = '127.0.0.1'
-MINIO_PORT = 9000
-MINIO_DIR = 'services'
-
-
-def get_image_file_path(file_name: str) -> str:
-    return f'http://{MINIO_HOST}:{MINIO_PORT}/{MINIO_DIR}/{file_name}'
 
 
 def get_astronaut_list(search_query: str):
     res = []
     for astronaut in astronaut_list:
-        if astronaut["name"].lower().startswith(search_query.lower()) or astronaut["name"].lower().split()[1]startswith(search_query.lower()):
+        if astronaut["name"].lower().startswith(search_query.lower()) or astronaut["name"].lower().split()[1].startswith(search_query.lower()):
             res.append(astronaut)
-            res[-1]['logo_file_path'] = get_image_file_path(astronaut["logo_file_name"])
+            res[-1]['logo_file_path'] = astronaut["logo_file_name"]
     return res
 
 
 def get_request_data():
     res = user_request.copy()
     for i in range(len(res)):
-        res[i]['logo_file_path'] = get_image_file_path(res[i]["logo_file_name"])
+        res[i]['logo_file_path'] = res[i]["logo_file_name"]
 
-    s = 0# sum([i['price'] for i in res])
     return {
         'astronaut_list': res,
-        'total': s,
     }
 
 
@@ -119,7 +110,7 @@ def astronaut_list_page(request):
 def astronaut_page(request, id):
     for astronaut in astronaut_list:
         if astronaut['id'] == id:
-            astronaut['logo_file_path'] = get_image_file_path(astronaut["logo_file_name"])
+            astronaut['logo_file_path'] = astronaut["logo_file_name"]
             return render(request, 'astronaut.html',
                           {'data': astronaut})
 
