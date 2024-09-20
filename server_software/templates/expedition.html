@@ -10,12 +10,26 @@
             </h5>
         </div>
     </div>
+    <div class="card mb-4 mt-4 rounded-0">
+        <div class="card-body bg-black text-white border-white">
+            <h5 class="card-title">
+                Название миссии: <strong>Артемис-3</strong>
+            </h5>
+        </div>
+    </div>
+    <div class="card mb-4 mt-4 rounded-0">
+        <div class="card-body bg-black text-white border-white">
+            <h5 class="card-title">
+                Дата вылета: <strong>20.09.2024</strong>
+            </h5>
+        </div>
+    </div>
     {% for astronaut in data.astronaut_list %}
         <div class="card mb-3 rounded-0 bg-black text-white border-white">
             <div class="row g-0">
                 <div class="col-md-2">
                     <div class="card-body">
-                        <img src="{{ astronaut.logo_file_path }}" width="100px" class="img-fluid"
+                        <img src="{{ astronaut.logo_file_path }}" width="150px" class="img-fluid"
                              alt="{{ astronaut.logo_file_path }}">
                     </div>
                 </div>
@@ -27,9 +41,9 @@
                         </h5>
                     </div>
                 </div>
-                <div class="col-md-2"></div>
+                <div class="col-md-2">
                     <div class="card-body">
-                        <a class="btn leader-btn">Назначить лидером</a>
+                        <p class="card-text text-white"><strong>{{ astronaut.leader }}</strong></p>
                     </div>
                 </div>
             </div>

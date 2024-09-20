@@ -53,6 +53,7 @@ user_request = [
         'id': 1,
         'name': 'Вуди Хобург',
         'logo_file_name': 'http://127.0.0.1:9000/astronauts/1.jpg',
+        'leader': 'Командир',
     },
     {
         'id': 2,
