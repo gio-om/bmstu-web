@@ -9,16 +9,8 @@
             <p class="name-display"><strong> {{ data.name }} </strong></p>
             <p class=""><strong>Страна:</strong> {{ data.country }} </p>
             <p class=""><strong>Специальность:</strong> {{ data.specialization }}</p>
-            
-            <p class=""><strong>Экспедиции:</strong></p>
-            <ul>
-                {% for expedition in data.expeditions %}
-                <li>{{ expedition }}</li>
-                {% endfor %}
 
-            </ul>
-
-            <p class=""><strong>Время в космосе:</strong> {{ data.space_time }} </p>
+            <p class=""><strong>Время в космосе:</strong> {{ data.space_time }} сут.</p>
             <!-- <p class=""><strong>Дата рождения:</strong> {{ data.specialization }}</p> -->
             <p class="py-2"> {{ data.biography|linebreaks }}  </p>
         </div>

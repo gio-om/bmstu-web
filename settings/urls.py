@@ -23,5 +23,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.astronaut_list_page, name='astronaut_list'),
     path('astronaut/<int:id>/', views.astronaut_page, name='astronaut_url'),
-    path('request/<int:id>/', views.request_page, name='request'),
+    path('expedition/<int:id>/', views.expedition_page, name='expedition'),
 ]

@@ -14,7 +14,7 @@
             <input type="submit" class="btn black-btn ml-3 mr-3" value="Поиск">
         </div>
         <div class="">
-            <a href="{% url 'request' data.request_id %}" class="btn black-btn">
+            <a href="{% url 'expedition' data.expedition_id %}" class="btn black-btn">
                 {{ data.count }} 
                 <img src="{% static 'img/cart.png' %}" width="22" alt="cart">
             </a>
@@ -32,18 +32,10 @@
                     <div class="card-body">
                         <h5 class="card-title">{{ astronaut.name }}</h5>
                         <p class="card-text">{{ astronaut.specialization }}</p>
-                        <p class="card-text">Экспедиции:</p>
                     </div>
-                    
-                    <ul>
-                        {% for expedition in astronaut.expeditions %}
-                        <li>{{ expedition }}</li>
-                        {% endfor %}
-
-                    </ul>
 
                     <div class="card-body">
-                        <p class="card-text">Время в космосе: <strong>{{ astronaut.space_time }}</strong></p>
+                        <p class="card-text">Время в космосе: <strong>{{ astronaut.space_time }} сут.</strong></p>
                     </div>
                     <div class="card-body">
                         <a href="{% url 'astronaut_url' astronaut.id %}" class="btn black-btn">Подробнее</a>
