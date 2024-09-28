@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'server_software'
+    'orion'
 ]
 
 MIDDLEWARE = [
@@ -56,7 +56,7 @@ ROOT_URLCONF = 'settings.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [ BASE_DIR / "server_software/templates" ],
+        'DIRS': [ BASE_DIR / "orion/templates" ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
