@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    <main class="container">
+
+        <h3  class="text-center">Черновой полет</h3>
+
+         <div class="form-group">
+            <label class="form-label">Название миссии</label>
+            {% if flight.field %}
+                <input placeholder="Введите название миссии" disabled type="text" class="form-control" style="width: 250px" value="{{ flight.field }}">
+            {% else %}
+                <input placeholder="Введите название миссии" disabled type="text" class="form-control" style="width: 250px">
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Цель миссии</label>
+            {% if flight.field %}
+                <input placeholder="Введите цель миссии" disabled type="text" class="form-control" style="width: 250px" value="{{ flight.field }}">
+            {% else %}
+                <input placeholder="Введите цель миссии" disabled type="text" class="form-control" style="width: 250px">
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Дата вылета</label>
+            {% if flight.field %}
+                <input placeholder="Введите дату вылета" disabled type="text" class="form-control" style="width: 250px" value="{{ flight.field }}">
+            {% else %}
+                <input placeholder="Введите дату вылета" disabled type="text" class="form-control" style="width: 250px">
+            {% endif %}
+        </div>
+
+        <form method="post" action="{% url 'delete_flight' flight.id %}">
+            {% csrf_token %}
+                <button class="btn btn-danger delete-draft-flight-btn" type="submit">
+                    Удалить
+                </button>
+            </a>
+        </form>
+
+        <h4 class="text-center">Астронавты</h4>
+
+        <div class="cards-wrapper d-flex flex-column">
+
+            {% for astronaut in flight.get_astronauts %}
+
+                {% include "astronaut_card.html" %}
+
+            {% endfor %}
+
+        </div>
+
+    </main>
+{% endblock content %}
