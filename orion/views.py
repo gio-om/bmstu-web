@@ -4,7 +4,7 @@ astronaut_list = [
     {
         'id': 1,
         'name': 'Вуди Хобург',
-        'logo_file_name': 'http://127.0.0.1:9000/astronauts/1.jpg',
+        'logo_file_name': 'http://127.0.0.1:9000/images/1.png',
         'specialization': 'Пилот',
         'country': 'USA',
         'space_time': 185,
@@ -13,7 +13,7 @@ astronaut_list = [
     {
         'id': 2,
         'name': 'Джош Кассада',
-        'logo_file_name': 'http://127.0.0.1:9000/astronauts/2.jpg',
+        'logo_file_name': 'http://127.0.0.1:9000/images/2.png',
         'specialization': 'Астронавт',
         'country': 'USA',
         'space_time': 155,
@@ -22,7 +22,7 @@ astronaut_list = [
     {
         'id': 3,
         'name': 'Николь Манн',
-        'logo_file_name': 'http://127.0.0.1:9000/astronauts/3.jpg',
+        'logo_file_name': 'http://127.0.0.1:9000/images/3.png',
         'specialization': 'Астронавт',
         'country': 'USA',
         'space_time': 199,  
@@ -31,7 +31,7 @@ astronaut_list = [
     {
         'id': 4,
         'name': 'Жасмин Могбелли',
-        'logo_file_name': 'http://127.0.0.1:9000/astronauts/4.jpg',
+        'logo_file_name': 'http://127.0.0.1:9000/images/4.png',
         'specialization': 'Астронавт',
         'country': 'USA',
         'space_time': 199,
@@ -40,7 +40,7 @@ astronaut_list = [
     {
         'id': 5,
         'name': 'Терри Верст',
-        'logo_file_name': 'http://127.0.0.1:9000/astronauts/5.jpg',
+        'logo_file_name': 'http://127.0.0.1:9000/images/5.png',
         'specialization': 'Летчик-испытатель',
         'country': 'USA',
         'space_time': 213, 
@@ -52,18 +52,18 @@ user_request = [
     {
         'id': 1,
         'name': 'Вуди Хобург',
-        'logo_file_name': 'http://127.0.0.1:9000/astronauts/1.jpg',
+        'logo_file_name': 'http://127.0.0.1:9000/images/1.png',
         'leader': 'Командир',
     },
     {
         'id': 2,
         'name': 'Джош Кассада',
-        'logo_file_name': 'http://127.0.0.1:9000/astronauts/2.jpg',
+        'logo_file_name': 'http://127.0.0.1:9000/images/2.png',
     },
     {
         'id': 3,
         'name': 'Николь Манн',
-        'logo_file_name': 'http://127.0.0.1:9000/astronauts/3.jpg',
+        'logo_file_name': 'http://127.0.0.1:9000/images/3.png',
     },
 ]
 
