@@ -13,9 +13,9 @@
                     <div class="form-group">
                         <label class="form-label">Командир</label>
                         {% if astronaut.value %}
-                            <input placeholder="Назначить командиром?" disabled type="text" class="form-control" style="width: 250px" value="Да">
+                            <input placeholder="Назначить командиром?" disabled type="text" class="form-control rounded-0" style="width: 250px" value="Да">
                         {% else %}
-                            <input placeholder="Назначить командиром?" disabled type="text" class="form-control" style="width: 250px" value="Нет">
+                            <input placeholder="Назначить командиром?" disabled type="text" class="form-control rounded-0" style="width: 250px" value="Нет">
                         {% endif %}
                     </div>
                     <a href="/astronauts/{{ astronaut.id }}/" class="btn btn-primary" style="width: 100px">

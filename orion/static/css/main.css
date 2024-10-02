@@ -84,24 +84,32 @@
     background-color: var(--bin-bg) !important;
     border-color: var(--bin-border) !important;
     color: var(--bin-color) !important;
+    border-radius: 0px;
+
 }
 
 .bin.btn.btn-primary:hover  {
     background-color: var(--bin-bg--hover) !important;
     border-color: var(--bin-border--hover) !important;
     color: var(--bin-color--hover) !important;
+    border-radius: 0px;
+
 }
 
 .add-btn.btn-secondary {
     background-color: var(--add-btn-bg) !important;
     border-color: var(--add-btn-border) !important;
     color: var(--add-btn-color) !important;
+    border-radius: 0px;
+
 }
 
 .add-btn.btn-secondary:hover {
     background-color: var(--add-btn-bg--hover) !important;
     border-color: var(--add-btn-border--hover) !important;
     color: var(--add-btn-color--hover) !important;
+    border-radius: 0px;
+
 }
 
 .cards-wrapper {
@@ -116,7 +124,7 @@
     background: var(--card-bg);
     border: 1px solid var(--card-border-color);
     color: var(--card-text);
-    border-radius: 16px;
+    border-radius: 0px;
 }
 
 .cards-wrapper .card .card-body {
@@ -166,6 +174,7 @@ main {
 .bin.btn.btn-primary:hover .badge {
     background-color: var(--badge-bg--hover) !important;
     color: var(--badge-color--hover) !important;
+    border-radius: 0px;
 }
 
 .justify-end {
@@ -185,52 +194,71 @@ main {
     background-color: var(--primary-btn-bg) !important;
     border-color: var(--primary-btn-border) !important;
     color: var(--primary-btn-color) !important;
+    border-radius: 0px;
+
 }
 
 .btn.btn-primary:hover {
     background-color: var(--primary-btn-bg--hover) !important;
     border-color: var(--primary-btn-border--hover) !important;
     color: var(--primary-btn-color--hover) !important;
+    border-radius: 0px;
+
 }
 
 .card-btns {
     display: flex;
     justify-content: center;
+    border-radius: 0px;
+
 }
 
 .delete-draft-flight-btn {
     width: 150px;
+    border-radius: 0px;
 }
 
 .search-btn.btn.btn-primary {
     background-color: var(--search-bg) !important;
     border-color: var(--search-border) !important;
     color: var(--search-color) !important;
+    border-radius: 0px;
+
 }
 
 .search-btn.btn.btn-primary:hover {
     background-color: var(--search-bg--hover) !important;
     border-color: var(--search-border--hover) !important;
     color: var(--search-color--hover) !important;
+    border-radius: 0px;
+
 }
 
 .return-btn.btn.btn-primary {
     background-color: var(--return-bg) !important;
     border-color: var(--return-border) !important;
     color: var(--return-color) !important;
+    border-radius: 0px;
+
 }
 
 .return-btn.btn.btn-primary:hover {
     background-color: var(--return-bg--hover) !important;
     border-color: var(--return-border--hover) !important;
     color: var(--return-color--hover) !important;
+    border-radius: 0px;
+
 }
 
 .btn:focus {
     box-shadow: none !important;
+    border-radius: 0px;
+
 }
 
 .bin.btn.btn-secondary.disabled  {
     cursor: not-allowed !important;
     pointer-events: all !important;
+    border-radius: 0px;
+
 }
