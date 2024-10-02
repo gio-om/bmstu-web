@@ -139,7 +139,7 @@
 
 .cards-wrapper .card img {
     height: 250px;
-    width: 80%;
+    width: auto;
     margin: auto;
     padding: 25px 0;
 }

@@ -71,8 +71,8 @@ class Flight(models.Model):
 
 
 class AstronautFlight(models.Model):
-    astronaut = models.ForeignKey(Astronaut, models.DO_NOTHING, blank=True, null=True)
-    flight = models.ForeignKey(Flight, models.DO_NOTHING, blank=True, null=True)
+    astronaut = models.ForeignKey(Astronaut, models.DO_NOTHING, blank=True, null=True, unique=True)
+    flight = models.ForeignKey(Flight, models.DO_NOTHING, blank=True, null=True, unique=True)
     value = models.BooleanField(blank=True, null=True)
 
     def __str__(self):
