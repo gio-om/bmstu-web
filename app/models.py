@@ -6,7 +6,7 @@ from django.db import models
 class Astronaut(models.Model):
     STATUS_CHOICES = (
         (1, 'Действует'),
-        (2, 'Удалена'),
+        (2, 'Удален'),
     )
 
     name = models.CharField(max_length=100, verbose_name="Название", blank=True)
