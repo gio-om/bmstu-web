@@ -37,8 +37,8 @@ def search_astronauts(request):
 
     resp = {
         "astronauts": serializer.data,
-        "astronauts_count": len(serializer.data),
-        "draft_flight": draft_flight.pk if draft_flight else None
+        "draft_flight": draft_flight.pk if draft_flight else None,
+        "astronauts_count": len(serializer.data)
     }
 
     return Response(resp)
