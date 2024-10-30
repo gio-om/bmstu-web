@@ -172,7 +172,7 @@ def search_flights(request):
     date_formation_start = request.GET.get("date_formation_start")
     date_formation_end = request.GET.get("date_formation_end")
 
-    flights = Flight.objects.exclude(status__in=[1, 5]) # Без удаленных и черновика
+    flights = Flight.objects.exclude(status__in=[5]) # Без удаленных
 
     if status > 0:
         flights = flights.filter(status=status)

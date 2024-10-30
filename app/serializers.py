@@ -10,14 +10,14 @@ class AstronautSerializer(serializers.ModelSerializer):
         if astronaut.image:
             return astronaut.image.url.replace("minio", "localhost", 1)
 
-        return "http://localhost:9000/images/default.png"
+        return "http://localhost:9000/images/default.png"  # Ставим дефолт, если нет img 
 
     class Meta:
         model = Astronaut
         fields = "__all__"
 
 
-class AstronautItemSerializer(serializers.ModelSerializer):
+class AstronautItemSerializer(serializers.ModelSerializer):  # Для передачи в полете
     image = serializers.SerializerMethodField()
     value = serializers.SerializerMethodField()
 
@@ -35,7 +35,7 @@ class AstronautItemSerializer(serializers.ModelSerializer):
         fields = ("id", "name", "image", "value")
 
 
-class FlightSerializer(serializers.ModelSerializer):
+class FlightSerializer(serializers.ModelSerializer):  # Полет просмотр
     astronauts = serializers.SerializerMethodField()
     owner = serializers.StringRelatedField(read_only=True)
     moderator = serializers.StringRelatedField(read_only=True)
@@ -49,7 +49,7 @@ class FlightSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class FlightsSerializer(serializers.ModelSerializer):
+class FlightsSerializer(serializers.ModelSerializer):  # Список полетов
     owner = serializers.StringRelatedField(read_only=True)
     moderator = serializers.StringRelatedField(read_only=True)
 
@@ -58,13 +58,13 @@ class FlightsSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class AstronautFlightSerializer(serializers.ModelSerializer):
+class AstronautFlightSerializer(serializers.ModelSerializer):  # М-М
     class Meta:
         model = AstronautFlight
         fields = "__all__"
 
 
-class UserSerializer(serializers.ModelSerializer):
+class UserSerializer(serializers.ModelSerializer):  # User
     class Meta:
         model = User
         fields = ('id', 'email', 'username')
