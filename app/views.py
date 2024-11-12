@@ -173,7 +173,7 @@ def search_flights(request):
     date_formation_start = request.GET.get("date_formation_start")
     date_formation_end = request.GET.get("date_formation_end")
 
-    flights = Flight.objects.exclude(status__in=[5]) # Без удаленных
+    flights = Flight.objects.exclude(status__in=[1, 5]) # Без удаленных и черновиков
 
     if status > 0:
         flights = flights.filter(status=status)
@@ -309,14 +309,10 @@ def delete_astronaut_from_flight(request, flight_id, astronaut_id):
 
     flight = Flight.objects.get(pk=flight_id)
 
-    serializer = FlightSerializer(flight, many=False)
-    astronauts = serializer.data["astronauts"]
+    items = AstronautFlight.objects.filter(flight_id=flight_id)
+    data = [AstronautItemSerializer(item.astronaut, context={"value": item.value}).data for item in items]
 
-    if len(astronauts) == 0:
-        flight.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
-    return Response(astronauts)
+    return Response(data, status=status.HTTP_200_OK)
 
 
 @api_view(["PUT"])
