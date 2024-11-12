@@ -324,7 +324,7 @@ def update_astronaut_in_flight(request, flight_id, astronaut_id):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     item = AstronautFlight.objects.get(astronaut_id=astronaut_id, flight_id=flight_id)
-
+    item.value = not item.value
     serializer = AstronautFlightSerializer(item, data=request.data,  partial=True)
 
     if serializer.is_valid():
