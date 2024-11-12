@@ -10,8 +10,6 @@ class AstronautSerializer(serializers.ModelSerializer):
         if astronaut.image:
             return astronaut.image.url.replace("minio", "localhost", 1)
 
-        return "http://localhost:9000/images/default.png"  # Ставим дефолт, если нет img 
-
     class Meta:
         model = Astronaut
         fields = "__all__"
