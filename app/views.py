@@ -307,8 +307,6 @@ def delete_astronaut_from_flight(request, flight_id, astronaut_id):
     item = AstronautFlight.objects.get(flight_id=flight_id, astronaut_id=astronaut_id)
     item.delete()
 
-    flight = Flight.objects.get(pk=flight_id)
-
     items = AstronautFlight.objects.filter(flight_id=flight_id)
     data = [AstronautItemSerializer(item.astronaut, context={"value": item.value}).data for item in items]
 
