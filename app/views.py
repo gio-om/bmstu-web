@@ -6,6 +6,7 @@ from django.utils.dateparse import parse_datetime
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from random import randint
 
 from .serializers import *
 
@@ -251,22 +252,26 @@ def update_status_admin(request, flight_id):
 
     request_status = int(request.data["status"])
 
-    if request_status not in [3, 5]:  # Или отклоняем(3) или завершаем(5)
+    if request_status not in [3, 4]:  # Или отклоняем(3) или завершаем(4)
         return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
     flight = Flight.objects.get(pk=flight_id)
 
     if flight.status != 2:  # Если статус полета "в работе" (2)
         return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+    
+    if request_status == 3: # Если отклоняем
+        flight.date = calc()
+
+    if request_status == 4:
+        flight.is_successful = randint(0, 1) # Радномное поле при завершении заявки
 
     flight.date_complete = timezone.now()
     flight.status = request_status
     flight.moderator = get_moderator()
     flight.save()
 
-    serializer = FlightSerializer(flight, many=False)
-
-    return Response(serializer.data)
+    return Response(status=status.HTTP_200_OK)
 
 
 @api_view(["DELETE"])

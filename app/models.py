@@ -44,6 +44,7 @@ class Flight(models.Model):
     name = models.CharField(verbose_name="Название", blank=True, null=True)
     description = models.TextField(verbose_name="Биография", blank=True, null=True)
     date = models.DateField(verbose_name="Дата", blank=True, null=True)
+    is_successful = models.IntegerField(verbose_name="Успех миссии", blank=True, null=True)
 
     owner = models.ForeignKey(User, on_delete=models.DO_NOTHING, verbose_name="Создатель", related_name='owner', null=True)
     moderator = models.ForeignKey(User, on_delete=models.DO_NOTHING, verbose_name="Модератор", related_name='moderator', blank=True,  null=True)
