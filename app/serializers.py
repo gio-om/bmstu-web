@@ -17,7 +17,7 @@ class AstronautSerializer(serializers.ModelSerializer):
 
 class AstronautItemSerializer(serializers.ModelSerializer):  # Для передачи в полете
     image = serializers.SerializerMethodField()
-    value = serializers.SerializerMethodField()
+    captain = serializers.SerializerMethodField()
 
     def get_image(self, astronaut):
         if astronaut.image:
@@ -25,12 +25,12 @@ class AstronautItemSerializer(serializers.ModelSerializer):  # Для перед
 
         return "http://localhost:9000/images/default.png"
 
-    def get_value(self, astronaut):
-        return self.context.get("value")
+    def get_captain(self, astronaut):
+        return self.context.get("captain")
 
     class Meta:
         model = Astronaut
-        fields = ("id", "name", "image", "value")
+        fields = ("id", "name", "image", "captain")
 
 
 class FlightSerializer(serializers.ModelSerializer):  # Полет просмотр
@@ -40,7 +40,7 @@ class FlightSerializer(serializers.ModelSerializer):  # Полет просмо�
 
     def get_astronauts(self, flight):
         items = AstronautFlight.objects.filter(flight=flight)
-        return [AstronautItemSerializer(item.astronaut, context={"value": item.value}).data for item in items]
+        return [AstronautItemSerializer(item.astronaut, context={"captain": item.captain}).data for item in items]
 
     class Meta:
         model = Flight

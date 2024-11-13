@@ -131,7 +131,7 @@ def add_flight(status, astronauts, owner, moderators):
         item = AstronautFlight(
             flight=flight,
             astronaut=astronaut,
-            value=i == j
+            captain=i == j
         )
         j += 1
         item.save()

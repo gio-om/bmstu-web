@@ -62,7 +62,7 @@ class Flight(models.Model):
 class AstronautFlight(models.Model):
     astronaut = models.ForeignKey(Astronaut, models.CASCADE, blank=True, null=True)
     flight = models.ForeignKey(Flight, models.CASCADE, blank=True, null=True)
-    value = models.IntegerField(blank=True, null=True)
+    captain = models.BooleanField(blank=True, null=True)
 
     def __str__(self):
         return "м-м №" + str(self.pk)
