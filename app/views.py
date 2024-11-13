@@ -37,8 +37,13 @@ def get_draft_flight(request):
         )
     ]
 )
+
+# МЕТОДЫ АСТРОНАВТОВ
 @api_view(["GET"])
 def search_astronauts(request):
+    """
+    Получение списка астронавтов с фильтром
+    """
     astronaut_name = request.GET.get("astronaut_name", "")
 
     astronauts = Astronaut.objects.filter(status=1)
@@ -46,14 +51,14 @@ def search_astronauts(request):
     if astronaut_name:
         astronauts = astronauts.filter(name__icontains=astronaut_name)
 
-    serializer = AstronautsSerializer(astronauts, many=True)
+    serializer = AstronautSerializer(astronauts, many=True)
 
-    draft_flight = get_draft_flight(request)
+    draft_flight = get_draft_flight()
 
     resp = {
         "astronauts": serializer.data,
-        "astronauts_count": AstronautFlight.objects.filter(flight=draft_flight).count() if draft_flight else None,
-        "draft_flight_id": draft_flight.pk if draft_flight else None
+        "draft_flight": draft_flight.pk if draft_flight else None,
+        "astronauts_count": AstronautFlight.objects.filter(flight=draft_flight).count() if draft_flight else None
     }
 
     return Response(resp)
@@ -61,11 +66,14 @@ def search_astronauts(request):
 
 @api_view(["GET"])
 def get_astronaut_by_id(request, astronaut_id):
+    """
+    Получение астронавта по id
+    """
     if not Astronaut.objects.filter(pk=astronaut_id).exists():
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     astronaut = Astronaut.objects.get(pk=astronaut_id)
-    serializer = AstronautSerializer(astronaut)
+    serializer = AstronautSerializer(astronaut, many=False)
 
     return Response(serializer.data)
 
@@ -73,14 +81,17 @@ def get_astronaut_by_id(request, astronaut_id):
 @api_view(["PUT"])
 @permission_classes([IsModerator])
 def update_astronaut(request, astronaut_id):
+    """
+    Обновление данных астронавта
+    """
     if not Astronaut.objects.filter(pk=astronaut_id).exists():
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     astronaut = Astronaut.objects.get(pk=astronaut_id)
 
-    serializer = AstronautSerializer(astronaut, data=request.data)
+    serializer = AstronautSerializer(astronaut, data=request.data, partial=True)
 
-    if serializer.is_valid(raise_exception=True):
+    if serializer.is_valid():
         serializer.save()
 
     return Response(serializer.data)
@@ -89,6 +100,9 @@ def update_astronaut(request, astronaut_id):
 @api_view(["POST"])
 @permission_classes([IsModerator])
 def create_astronaut(request):
+    """
+    Создание пустого астронавта и вывод всех
+    """
     serializer = AstronautSerializer(data=request.data, partial=False)
 
     serializer.is_valid(raise_exception=True)
@@ -104,6 +118,9 @@ def create_astronaut(request):
 @api_view(["DELETE"])
 @permission_classes([IsModerator])
 def delete_astronaut(request, astronaut_id):
+    """
+    Удаление астронавта по id и вывод всех 
+    """
     if not Astronaut.objects.filter(pk=astronaut_id).exists():
         return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -120,6 +137,9 @@ def delete_astronaut(request, astronaut_id):
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
 def add_astronaut_to_flight(request, astronaut_id):
+    """
+    Добавление астронавта в полет и вывод экипажа(создает полет, если нет) 
+    """
     if not Astronaut.objects.filter(pk=astronaut_id).exists():
         return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -148,6 +168,9 @@ def add_astronaut_to_flight(request, astronaut_id):
 @api_view(["POST"])
 @permission_classes([IsModerator])
 def update_astronaut_image(request, astronaut_id):
+    """
+    Обновление картинки астронавта
+    """
     if not Astronaut.objects.filter(pk=astronaut_id).exists():
         return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -155,25 +178,28 @@ def update_astronaut_image(request, astronaut_id):
 
     image = request.data.get("image")
 
-    if image is None:
-        return Response(status.HTTP_400_BAD_REQUEST)
-
-    astronaut.image = image
-    astronaut.save()
+    image = request.data.get("image")
+    if image is not None:
+        astronaut.image = image
+        astronaut.save()
 
     serializer = AstronautSerializer(astronaut)
 
     return Response(serializer.data)
 
 
+# МЕТОДЫ ПОЛЕТА
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def search_flights(request):
+    """
+    Получение полетов и фильтрация по статусу и дате
+    """
     status_id = int(request.GET.get("status", 0))
     date_formation_start = request.GET.get("date_formation_start")
     date_formation_end = request.GET.get("date_formation_end")
 
-    flights = Flight.objects.exclude(status__in=[1, 5])
+    flights = Flight.objects.exclude(status__in=[1, 5]) # Без удаленных и черновиков
 
     user = identity_user(request)
     if not user.is_superuser:
@@ -196,6 +222,9 @@ def search_flights(request):
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def get_flight_by_id(request, flight_id):
+    """
+    Получение полета со списком астронавтов
+    """
     user = identity_user(request)
 
     if not Flight.objects.filter(pk=flight_id, owner=user).exists():
@@ -211,6 +240,9 @@ def get_flight_by_id(request, flight_id):
 @api_view(["PUT"])
 @permission_classes([IsAuthenticated])
 def update_flight(request, flight_id):
+    """
+    Изменение данных полета
+    """
     user = identity_user(request)
 
     if not Flight.objects.filter(pk=flight_id, owner=user).exists():
@@ -228,6 +260,9 @@ def update_flight(request, flight_id):
 @api_view(["PUT"])
 @permission_classes([IsAuthenticated])
 def update_status_user(request, flight_id):
+    """
+    Формирование полета пользователем
+    """
     user = identity_user(request)
 
     if not Flight.objects.filter(pk=flight_id, owner=user).exists():
@@ -250,21 +285,27 @@ def update_status_user(request, flight_id):
 @api_view(["PUT"])
 @permission_classes([IsModerator])
 def update_status_admin(request, flight_id):
+    """
+    Завершение/Отклонение полета модератором
+    """
     if not Flight.objects.filter(pk=flight_id).exists():
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     request_status = int(request.data["status"])
 
-    if request_status not in [3, 4]:
+    if request_status not in [3, 4]: # Или отклоняем(3) или завершаем(4)
         return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
     flight = Flight.objects.get(pk=flight_id)
 
-    if flight.status != 2:
+    if flight.status != 2: # Если статус полета "в работе" (2)
         return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
-    if request_status == 3:
+    if request_status == 3: # Если отклоняем
         flight.date = calc()
+
+    if request_status == 4:
+        flight.is_successful = randint(0, 1) # Радномное поле при завершении заявки
 
     flight.status = request_status
     flight.date_complete = timezone.now()
@@ -279,6 +320,9 @@ def update_status_admin(request, flight_id):
 @api_view(["DELETE"])
 @permission_classes([IsAuthenticated])
 def delete_flight(request, flight_id):
+    """
+    Удаление полета
+    """
     user = identity_user(request)
 
     if not Flight.objects.filter(pk=flight_id, owner=user).exists():
@@ -294,10 +338,13 @@ def delete_flight(request, flight_id):
 
     return Response(status=status.HTTP_200_OK)
 
-
+# МЕТОДЫ М-М
 @api_view(["DELETE"])
 @permission_classes([IsAuthenticated])
 def delete_astronaut_from_flight(request, flight_id, astronaut_id):
+    """
+    Удалить астронавта из полета
+    """
     user = identity_user(request)
 
     if not Flight.objects.filter(pk=flight_id, owner=user).exists():
@@ -309,17 +356,18 @@ def delete_astronaut_from_flight(request, flight_id, astronaut_id):
     item = AstronautFlight.objects.get(flight_id=flight_id, astronaut_id=astronaut_id)
     item.delete()
 
-    flight = Flight.objects.get(pk=flight_id)
+    items = AstronautFlight.objects.filter(flight_id=flight_id)
+    data = [AstronautItemSerializer(item.astronaut, context={"value": item.value}).data for item in items]
 
-    serializer = FlightSerializer(flight)
-    astronauts = serializer.data["astronauts"]
-
-    return Response(astronauts)
+    return Response(data, status=status.HTTP_200_OK)
 
 
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def get_astronaut_flight(request, flight_id, astronaut_id):
+    """
+    Полеты астронавта
+    """
     user = identity_user(request)
 
     if not Flight.objects.filter(pk=flight_id, owner=user).exists():
@@ -339,6 +387,9 @@ def get_astronaut_flight(request, flight_id, astronaut_id):
 @api_view(["PUT"])
 @permission_classes([IsAuthenticated])
 def update_astronaut_in_flight(request, flight_id, astronaut_id):
+    """
+    Изменить значение поля в м-м
+    """
     user = identity_user(request)
 
     if not Flight.objects.filter(pk=flight_id, owner=user).exists():
@@ -348,8 +399,8 @@ def update_astronaut_in_flight(request, flight_id, astronaut_id):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     item = AstronautFlight.objects.get(astronaut_id=astronaut_id, flight_id=flight_id)
-
-    serializer = AstronautFlightSerializer(item, data=request.data, partial=True)
+    item.value = not item.value
+    serializer = AstronautFlightSerializer(item, data=request.data,  partial=True)
 
     if serializer.is_valid():
         serializer.save()
@@ -357,9 +408,36 @@ def update_astronaut_in_flight(request, flight_id, astronaut_id):
     return Response(serializer.data)
 
 
+# МЕТОДЫ ПОЛЬЗОВАТЕЛЯ
+@swagger_auto_schema(method='post', request_body=UserRegisterSerializer)
+@api_view(["POST"])
+def register(request):
+    """
+    Регистрация (Создание нового пользователя)
+    """
+    serializer = UserRegisterSerializer(data=request.data)
+
+    if not serializer.is_valid():
+        return Response(status=status.HTTP_409_CONFLICT)
+
+    user = serializer.save()
+
+    session_id = str(uuid.uuid4())
+    session_storage.set(session_id, user.id)
+
+    serializer = UserSerializer(user)
+    response = Response(serializer.data, status=status.HTTP_201_CREATED)
+    response.set_cookie("session_id", session_id, samesite="lax")
+
+    return response
+
+
 @swagger_auto_schema(method='post', request_body=UserLoginSerializer)
 @api_view(["POST"])
 def login(request):
+    """
+    Аутентификация
+    """
     serializer = UserLoginSerializer(data=request.data)
 
     if not serializer.is_valid():
@@ -379,29 +457,12 @@ def login(request):
     return response
 
 
-@swagger_auto_schema(method='post', request_body=UserRegisterSerializer)
-@api_view(["POST"])
-def register(request):
-    serializer = UserRegisterSerializer(data=request.data)
-
-    if not serializer.is_valid():
-        return Response(status=status.HTTP_409_CONFLICT)
-
-    user = serializer.save()
-
-    session_id = str(uuid.uuid4())
-    session_storage.set(session_id, user.id)
-
-    serializer = UserSerializer(user)
-    response = Response(serializer.data, status=status.HTTP_201_CREATED)
-    response.set_cookie("session_id", session_id, samesite="lax")
-
-    return response
-
-
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
 def logout(request):
+    """
+    Деавторизация
+    """
     session = get_session(request)
     session_storage.delete(session)
 
@@ -415,6 +476,9 @@ def logout(request):
 @api_view(["PUT"])
 @permission_classes([IsAuthenticated])
 def update_user(request, user_id):
+    """
+    Обновление данных пользователя (Личный кабинет)
+    """
     if not User.objects.filter(pk=user_id).exists():
         return Response(status=status.HTTP_404_NOT_FOUND)
 
