@@ -6,14 +6,17 @@ from django.utils.dateparse import parse_datetime
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, permission_classes, authentication_classes, parser_classes
 from rest_framework.response import Response
+from rest_framework.permissions import AllowAny
 
 from .management.commands.fill_db import calc
 from .permissions import *
 from .redis import session_storage
 from .serializers import *
 from .utils import identity_user, get_session
+from random import randint
+
 
 
 def get_draft_flight(request):
@@ -40,25 +43,35 @@ def get_draft_flight(request):
 
 # МЕТОДЫ АСТРОНАВТОВ
 @api_view(["GET"])
+@permission_classes([AllowAny])
+@authentication_classes([AuthBySessionIDIfExists])
 def search_astronauts(request):
     """
     Получение списка астронавтов с фильтром
     """
+    user = request.user
     astronaut_name = request.GET.get("astronaut_name", "")
-
     astronauts = Astronaut.objects.filter(status=1)
 
     if astronaut_name:
-        astronauts = astronauts.filter(name__icontains=astronaut_name)
+         astronauts = astronauts.filter(name__icontains=astronaut_name)
+
+    flight = None
+    astronauts_count = 0
+    if user is not None:
+        flight = Flight.objects.filter(owner=user.pk, status=1).first()
+        print(flight)
+        if flight is not None:
+            astronauts_count = Flight.objects.filter(pk=flight.id).count()
 
     serializer = AstronautSerializer(astronauts, many=True)
 
-    draft_flight = get_draft_flight()
+    #draft_flight = get_draft_flight(request)
 
     resp = {
         "astronauts": serializer.data,
-        "draft_flight": draft_flight.pk if draft_flight else None,
-        "astronauts_count": AstronautFlight.objects.filter(flight=draft_flight).count() if draft_flight else None
+        "draft_flight": flight.pk if flight else None,
+        "astronauts_count": astronauts_count
     }
 
     return Response(resp)
