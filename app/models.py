@@ -10,13 +10,13 @@ class Astronaut(models.Model):
     )
 
     name = models.CharField(max_length=100, verbose_name="Название")
-    description = models.TextField(max_length=500, verbose_name="Описание",)
+    description = models.TextField(max_length=500, verbose_name="Биография",)
     status = models.IntegerField(choices=STATUS_CHOICES, default=1, verbose_name="Статус")
     image = models.ImageField(verbose_name="Фото", blank=True, null=True)
 
-    space_time = models.IntegerField(blank=True)
-    specialization = models.CharField(blank=True)
-    country = models.CharField(blank=True)
+    space_time = models.IntegerField()
+    specialization = models.CharField()
+    country = models.CharField()
 
     def __str__(self):
         return self.name
@@ -25,6 +25,7 @@ class Astronaut(models.Model):
         verbose_name = "Астронавт"
         verbose_name_plural = "Астронавты"
         db_table = "astronauts"
+        ordering = ("pk",)
 
 
 class Flight(models.Model):
@@ -45,7 +46,7 @@ class Flight(models.Model):
     moderator = models.ForeignKey(User, on_delete=models.DO_NOTHING, verbose_name="Модератор", related_name='moderator', blank=True,  null=True)
 
     name = models.CharField(verbose_name="Название", blank=True, null=True)
-    goal = models.TextField(verbose_name="Цель", blank=True, null=True)
+    description = models.TextField(verbose_name="Биография", blank=True, null=True)
     date = models.DateField(verbose_name="Дата", blank=True, null=True)
     is_successful = models.IntegerField(verbose_name="Успех миссии", blank=True, null=True)
 
@@ -63,7 +64,7 @@ class Flight(models.Model):
 class AstronautFlight(models.Model):
     astronaut = models.ForeignKey(Astronaut, on_delete=models.DO_NOTHING, blank=True, null=True)
     flight = models.ForeignKey(Flight, on_delete=models.DO_NOTHING, blank=True, null=True)
-    value = models.BooleanField(verbose_name="Поле м-м", default=0)
+    leader = models.BooleanField(verbose_name="Поле м-м", default=False)
 
     def __str__(self):
         return "м-м №" + str(self.pk)
@@ -72,6 +73,7 @@ class AstronautFlight(models.Model):
         verbose_name = "м-м"
         verbose_name_plural = "м-м"
         db_table = "astronaut_flight"
+        ordering = ('pk', )
         constraints = [
             models.UniqueConstraint(fields=['astronaut', 'flight'], name="astronaut_flight_constraint")
         ]

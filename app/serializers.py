@@ -18,9 +18,9 @@ class AstronautsSerializer(serializers.ModelSerializer):
 
 
 class AstronautSerializer(AstronautsSerializer):
-    class Meta(AstronautsSerializer.Meta):
+    class Meta:
         model = Astronaut
-        fields = AstronautsSerializer.Meta.fields + ("description", )
+        fields = "__all__"
 
 
 class FlightsSerializer(serializers.ModelSerializer):
@@ -37,17 +37,18 @@ class FlightSerializer(FlightsSerializer):
 
     def get_astronauts(self, flight):
         items = AstronautFlight.objects.filter(flight=flight)
-        return [AstronautItemSerializer(item.astronaut, context={"value": item.value}).data for item in items]
+        return [AstronautItemSerializer(item.astronaut, context={"leader": item.leader}).data for item in items]
 
 
 class AstronautItemSerializer(AstronautSerializer):
-    value = serializers.SerializerMethodField()
+    leader = serializers.SerializerMethodField()
 
-    def get_value(self, astronaut):
-        return self.context.get("value")
+    def get_leader(self, _):
+        return self.context.get("leader")
 
-    class Meta(AstronautSerializer.Meta):
-        fields = "__all__"
+    class Meta:
+        model = Astronaut
+        fields = ("id", "name", "space_time", "image", "leader")
 
 
 class AstronautFlightSerializer(serializers.ModelSerializer):
@@ -82,5 +83,11 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 
 
 class UserLoginSerializer(serializers.Serializer):
-    username = serializers.CharField(required=True)
-    password = serializers.CharField(required=True)
+    username = serializers.CharField(required=False)
+    password = serializers.CharField(required=False)
+
+
+class UserProfileSerializer(serializers.Serializer):
+    username = serializers.CharField(required=False)
+    email = serializers.CharField(required=False)
+    password = serializers.CharField(required=False)
